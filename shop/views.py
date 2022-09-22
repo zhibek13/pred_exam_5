@@ -43,7 +43,8 @@ class ItemListCreateAPIView(ListCreateAPIView):
         return self.queryset.filter(category_id=self.kwargs['category_id'])
 
     def perform_create(self, serializer):
-        serializer.save()
+        category = Category.objects.get(id=self.kwargs['category_id'])
+        serializer.save(category=category, profile=self.request.user.profile)
 
 
 class ItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
@@ -76,7 +77,10 @@ class OrderListCreateAPIView(ListCreateAPIView):
         return self.queryset.filter(pk=self.kwargs['pk'])
 
     def perform_create(self, serializer):
-        serializer.save(profile=get_object_or_404(Profile, pk=self.kwargs['pk']))
+        serializer.save(
+            profile=get_object_or_404(Profile, pk=self.kwargs['pk']),
+            item=get_object_or_404(Item, pk=self.kwargs['pk'])
+        )
 
 
 class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):

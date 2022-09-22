@@ -8,4 +8,5 @@ urlpatterns = [
     path('account/register/sender/', views.SenderRegisterView.as_view()),
     path('account/register/buyer/', views.BuyerRegisterView.as_view()),
     path('', include('rest_framework.urls')),
+    path('account/token/', obtain_auth_token),
 ]
